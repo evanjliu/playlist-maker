@@ -60,7 +60,7 @@ runRequest();
 
 Once you recieve your response in the response variable. Spotify returns a huge amount of amount of data. See [Spotify - Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/get-recommendations) to see how the response data is formatted. Here is an example piece of code I used to extract the song name, album name, artist title, duration, and spotify link from the response data. The fucntion returns an array that contains a dictionary of the song information at Ind 0 and the length at Ind 2. 
 
-It takes in 3 parameters: the resulting response from the API call, the number of songs listed, explicit setting ('yes' or 'no' strings).
+It takes in 2 parameters: the resulting response from the API call, the number of songs listed.
 
 ```
 function makePlaylistArray(result, song_limit) {
