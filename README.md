@@ -28,7 +28,7 @@ npm start
 ## How to request
 See [ZeroMQ Documentation](https://zeromq.org/get-started/) for informaiton how to import the modules and use.
 
-Using ZeroMQ, as long as you bind to port 5555 and send a request to that port on your local machine, all you have ot do is send an array object as the message using ZeroMQ. Here is an example of a request set up and sent to the microservice. You will need to send the number of songs you want and the genres. The genres are defined in the **genres.txt** file. 
+Using ZeroMQ, as long as you bind to port 5555 and send a request to that port on your local machine, all you have to do is send an array object as the message using ZeroMQ. Here is an example of a request set up and sent to the microservice. You will need to send the number of songs (max 100) and the genres (max 5). The genres are defined in the **genres.txt** file. 
 
 ```
 // Node.js dependencies
@@ -44,7 +44,7 @@ async function runRequest() {
     // Set up your request here with defined variables
     const request = {
         limit_songs,    // Define number of songs you want. MAX 100
-        selectedGenres  // Define your genres in an array. See **genres.txt** to see the full list of genres available for Spotify. 
+        selectedGenres  // Define your genres in an array. (Ex: ['anime', 'classical'])
     };
 
     sock.send(request);
