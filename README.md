@@ -7,7 +7,7 @@ Node.js, Javascript, ZeroMQ
 ## Instructions
 See [Spotify Web API](https://developer.spotify.com/documentation/web-api) for more in depth instructions for completing up to step 5.
 1. You must first set up a Spotify account and log in.
-2. Navigate to [Your Dashboad](https://developer.spotify.com/dashboard) and create a new App. 
+2. Navigate to [Your Dashboard](https://developer.spotify.com/dashboard) and create a new App. 
 3. For your new app settings, name it whatever you like. Just make sure to select the **"Web API"** in for the **Which API/SDKs are you planning to use?** question.
 4. Navigate  go to your new app settings in your app dashboard.
 5. Once in the settings tab, you can copy and paste the `CLIENT_ID` and `CLIENT_SECRET` into the app.js file.
