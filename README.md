@@ -43,8 +43,8 @@ async function runRequest() {
 
     // Set up your request here with defined variables
     const request = {
-        limit_songs,    // Define number of songs you want. MAX 100
-        selectedGenres  // Define your genres in an array. (Ex: ['anime', 'classical'])
+        limit_songs,    // Define number of songs you want. MAX 100.
+        selectedGenres  // Define your genres in an array. MAX 5. (Ex: ['anime', 'classical'])
     };
 
     sock.send(request);
@@ -58,7 +58,7 @@ async function runRequest() {
 runRequest();
 ```
 
-Once you recieve your response in the response variable. Spotify returns a huge amount of amount of data. See [Spotify - Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/get-recommendations) to see how the response data is formatted. Here is an example piece of code I used to extract the song name, album name, artist title, duration, and spotify link from the response data. The fucntion returns an array that contains a dictionary of the song information at Ind 0 and the length at Ind 2. 
+Once you recieve your response in the response variable. Spotify returns a huge amount of amount of data. See [Spotify - Get Recommendations](https://developer.spotify.com/documentation/web-api/reference/get-recommendations) to see how the response data is formatted. Here is an example piece of code I used to extract the song name, album name, artist title, duration, and spotify link from the response data. The function returns an array that contains a dictionary of the song information at ind[0] and the length at ind[1]. 
 
 It takes in 2 parameters: the resulting response from the API call, the number of songs listed.
 
