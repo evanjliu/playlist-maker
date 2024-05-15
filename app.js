@@ -6,6 +6,7 @@ const zmq = require('zeromq');
 const { getAccessToken } = require('./src/getToken');
 const { refreshAccessToken } = require('./src/refreshAccessToken');
 const { readAccessToken, saveAccessToken, readRefreshToken, saveRefreshToken } = require('./src/accessTokens');
+const { makePlaylistArray } = require('./src/makePlaylist');
 
 // -----------------------------------------------------------------------------------------------------------
 // Define Spotify credentials here
@@ -16,8 +17,12 @@ const { readAccessToken, saveAccessToken, readRefreshToken, saveRefreshToken } =
 // 2: Create a developer app and select "Web API" when asked about which API you want to use.
 // 3: Navigate to your account dashboard and copy/paste your CLIENT_ID and CLIENT_SECRET into these variables.
 // -----------------------------------------------------------------------------------------------------------
-const CLIENT_ID = 'YOUR_CLIENT_ID';
+/* const CLIENT_ID = 'YOUR_CLIENT_ID';
 const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'; */
+
+const CLIENT_ID = '4941ac63e50843f8871d981fc9fc72e8';
+const CLIENT_SECRET = '47d120af57df4f8099ea8c0fe2e7b88d';
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 
 // Spotify Web API and set up authentication
@@ -134,8 +139,26 @@ async function createPlaylist() {
 
         // Set User parameters to values to be used to make API call
         numSongs = (request.limit_songs);
-        genres = [request.selectedGenres];
+        genres = [request.selected_genres];
+        let songsList = []
+        let error = ""
 
+        // Check if numSongs is an int between 1 - 100
+        if (!Number.isInteger(numSongs) || numSongs < 1 || numSongs > 100) {
+            error = 'Invalid number of songs. It must be an integer between 1 and 100.';
+            console.error(error);
+            sock.send(JSON.stringify({error: error}));
+            continue;
+        }
+        
+        // Check if genres is an array of strings with length less than 5
+        if (!Array.isArray(genres) || genres.length > 5) {
+            error = 'Invalid genres. It must be an array of strings with no more than 5 items.';
+            console.error(error);
+            sock.send(JSON.stringify({error: error}));
+            continue;
+        }
+            
         // Spotify Routes and API Calls
         try {
             spotify.getRecommendations({
@@ -145,6 +168,8 @@ async function createPlaylist() {
 
                 .then(function (data) {
 
+                    // See: https://developer.spotify.com/documentation/web-api/reference/get-recommendations
+                    // for how the tracks object is formatted.
                     const items = data.body.tracks;
 
                     // Prints song name to console
@@ -152,15 +177,21 @@ async function createPlaylist() {
                         console.log(i + 1, ': Song Name - ', items[i].name)
                     };
 
-                    // Send back the playlist with tracks info only. See:
-                    // https://developer.spotify.com/documentation/web-api/reference/get-recommendations
-                    // for how the tracks object is formatted.
-                    sock.send(JSON.stringify(items));
+                    // Process the list to extract name, album, artist, duration, and Spotify link.
+                    // makePlaylistArray:
+                    //  TAKES: 2 Parameters -> (TracksObject, NumberOfSongs)
+                    //  RETURNS: An array -> [ArrayofSongInfo, LengthOfSongArray]
+                    songsList = makePlaylistArray(items, items.length);
+
+                    // Send back song list with song info.
+                    sock.send(JSON.stringify(songsList[0]));
 
                 }), function (err) {
                     console.error('Something went wrong.', err);
                 }
-        } catch(error) {
+        } 
+        // If the request fails gets a new token.
+        catch(error) {
             console.log('Attempting to get new token...\n')
 
             // Get new token
@@ -177,6 +208,36 @@ async function createPlaylist() {
             console.log('Testing Token...\n\nTest Data: ', retest3.body, '\n');
 
             console.log("Token Refreshed!\n\nPlease execute the request again on port 5555...\n\n")
+
+            // After getting token, retries the request
+            spotify.getRecommendations({
+                seed_genres: genres,
+                limit: numSongs
+                })
+                    .then(function (data) {
+                        // Send back the playlist with tracks info only. See:
+                        // https://developer.spotify.com/documentation/web-api/reference/get-recommendations
+                        // for how the tracks object is formatted.
+                        const items = data.body.tracks;
+    
+                        // Prints song name to console
+                        for (let i = 0; i < items.length; i++) {
+                            console.log(i + 1, ': Song Name - ', items[i].name)
+                        };
+                            
+                        // Process the list to extract name, album, artist, duration, and Spotify link.
+                        // makePlaylistArray:
+                        //  TAKES: 2 Parameters -> (TracksObject, NumberOfSongs)
+                        //  RETURNS: An array -> [ArrayofSongInfo, LengthOfSongArray]
+                        songsList = makePlaylistArray(items, items.length);
+
+                        // Send back song list with song info.
+                        sock.send(JSON.stringify(songsList[0]));
+    
+                    }), function (err) {
+                        console.error('Something went wrong.', err);
+                        sock.send(JSON.stringify({error: error}));
+                    }
         }
     };
 

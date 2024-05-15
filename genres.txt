@@ -2,7 +2,7 @@
 "black-metal","bluegrass","blues","bossanova","brazil","breakbeat",
 "british","cantopop","chicago-house","children","chill","classical",
 "club","comedy","country","dance","dancehall","death-metal","deep-house",
-"detroit-techno","disco","disney","drum-and-bass","dub","dubstep","edm"
+"detroit-techno","disco","disney","drum-and-bass","dub","dubstep","edm",
 "electro","electronic","emo","folk","forro","french","funk","garage",
 "german","gospel","goth","grindcore","groove","grunge","guitar","happy",
 "hard-rock","hardcore","hardstyle","heavy-metal","hip-hop","holidays",
