@@ -135,7 +135,7 @@ async function createPlaylist() {
     for await (const [msg] of sock) {
 
         let request = JSON.parse(msg);
-        console.log('Received Message' + ': ' + msg + '\n');
+        console.log('\nReceived Message' + ': ' + msg + '\n');
 
         // Set User parameters to values to be used to make API call
         numSongs = (request.limit_songs);
@@ -143,9 +143,10 @@ async function createPlaylist() {
         let songsList = []
         let error = ""
 
+        console.log('Validating Received Inputs...\n');
         // Check if numSongs is an int between 1 - 100
         if (!Number.isInteger(numSongs) || numSongs < 1 || numSongs > 100) {
-            error = 'Invalid number of songs. It must be an integer between 1 and 100.';
+            error = 'Invalid number of songs. It must be an integer between 1 and 100.\n Restarting Service... \n\n';
             console.error(error);
             sock.send(JSON.stringify({error: error}));
             continue;
@@ -153,12 +154,13 @@ async function createPlaylist() {
         
         // Check if genres is an array of strings with length less than 5
         if (!Array.isArray(genres) || genres.length > 5) {
-            error = 'Invalid genres. It must be an array of strings with no more than 5 items.';
+            error = 'Invalid genres. It must be an array of strings with no more than 5 items. \n Restarting Service... \n\n';
             console.error(error);
             sock.send(JSON.stringify({error: error}));
             continue;
         }
             
+        console.log('Inputs are good! Now sending request to Spotify...\n');
         // Spotify Routes and API Calls
         try {
             spotify.getRecommendations({
@@ -173,6 +175,7 @@ async function createPlaylist() {
                     const items = data.body.tracks;
 
                     // Prints song name to console
+                    console.log('Received Songs: \n');
                     for (let i = 0; i < items.length; i++) {
                         console.log(i + 1, ': Song Name - ', items[i].name)
                     };
