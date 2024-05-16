@@ -21,8 +21,8 @@ const { makePlaylistArray } = require('./src/makePlaylist');
 const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'; */
 
-const CLIENT_ID = '4941ac63e50843f8871d981fc9fc72e8';
-const CLIENT_SECRET = '47d120af57df4f8099ea8c0fe2e7b88d';
+const CLIENT_ID = 'YOUR_CLIENT_ID';
+const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 
 // Spotify Web API and set up authentication
