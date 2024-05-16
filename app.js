@@ -17,10 +17,6 @@ const { makePlaylistArray } = require('./src/makePlaylist');
 // 2: Create a developer app and select "Web API" when asked about which API you want to use.
 // 3: Navigate to your account dashboard and copy/paste your CLIENT_ID and CLIENT_SECRET into these variables.
 // -----------------------------------------------------------------------------------------------------------
-/* const CLIENT_ID = 'YOUR_CLIENT_ID';
-const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
-const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'; */
-
 const CLIENT_ID = 'YOUR_CLIENT_ID';
 const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
