@@ -53,7 +53,7 @@ request = {
 }
 
 # Send the request in JSON format
-sock.sent_json(request)
+sock.send_json(request)
 
 # Reply is in JSON format so we have to convert it back to Python object from JSON using .recv_json()
 reply = sock.recv_json()
